@@ -118,4 +118,4 @@ const GameControl = (() => {
 })();
 
 GameBoard.createBoard();
-GameControl.turns();
+// GameControl.turns();
