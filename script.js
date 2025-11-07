@@ -121,10 +121,12 @@ const GameControl = (() => {
                     if (checkWinner()) {
                         GameBoard.gameBoard.removeEventListener('click');
                         gameOver = true;
+                        return;
                     }
-                    if (count >= 9) {
+                    if (count == 8) {
                         title.textContent = "Draw!";
                         gameOver = true;
+                        return;
                     }
                     count++;
                     break;
@@ -141,6 +143,7 @@ const GameControl = (() => {
 
     }
     const reset = () => {
+        title.textContent = "TIC-TAC-TOE";
         GameBoard.clearBoard();
         GameBoard.createBoard();
         gameOver = false;
