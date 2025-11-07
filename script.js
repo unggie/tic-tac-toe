@@ -1,6 +1,6 @@
 // Player factory function
-const Player = (name, mark) => {
-    return {name, mark,}
+const Player = (name, mark, card) => {
+    return {name, mark, card}
 }
 
 // GameBoard module
@@ -14,8 +14,12 @@ const GameBoard = (() => {
     let cell = [];
 
     // create objects
-    let playerOneName = `Steve`;
-    let playerTwoName = `Gift`;     
+    let playerOneName = `Player1`; 
+    let playerTwoName = `Player2`;  
+    // const createPlayer = () => {
+    //     playerOneName = prompt("Player1 enter your name");
+    //     playerTwoName = prompt("Player2 enter your name");
+    // }
         
     const player1 = Player(playerOneName, 'X');
     const player2 = Player(playerTwoName, 'O');
@@ -92,7 +96,7 @@ const GameControl = (() => {
             const [a, b, c] = combination;
             if (GameBoard.cell[a] !== " " && GameBoard.cell[a] === GameBoard.cell[b] && GameBoard.cell[a] === GameBoard.cell[c]) {
                 const winner = GameBoard.cell[a] === GameBoard.player1.mark ? GameBoard.player1 :GameBoard.player2;
-                title.textContent = `${winner.name} (${winner.mark})has won!`;
+                title.textContent = `${winner.name} (${winner.mark}) has won!`;
                 console.log(`${winner.name}(${winner.mark})has won the game!`);
                 gameOver = true
                 return true; 
@@ -103,14 +107,14 @@ const GameControl = (() => {
 
     // check for turns
     const turns = () => {
-        GameBoard.mainDiv.addEventListener('click', (event) => {            
+        GameBoard.mainDiv.addEventListener('click', (event) => {
+            const currentPlayer = (count % 2 === 0) ? GameBoard.player1: GameBoard.player2;
             switch(event.target.classList.value) {
                 case "cell":
                     if (gameOver) return console.log("Game Over!!!");
 
                     const position = event.target.dataset.position;
-                    const currentPlayer = (count % 2 === 0) ? GameBoard.player1: GameBoard.player2;
-        
+
                     if (position == null) return;
         
                     if (position < 0 || position > 8 || !GameBoard.setMark(currentPlayer.mark, position)) {
@@ -118,16 +122,20 @@ const GameControl = (() => {
                         return;
                     }
                     GameBoard.displayBoard();
+
+                    // Check if there is a winner
                     if (checkWinner()) {
-                        GameBoard.gameBoard.removeEventListener('click');
                         gameOver = true;
                         return;
                     }
-                    if (count == 8) {
-                        title.textContent = "Draw!";
+
+                    // Check for draw only if no winner
+                    if (count === 8) {
+                        // title.textContent = 'DRaw';
                         gameOver = true;
                         return;
                     }
+
                     count++;
                     break;
 
@@ -137,6 +145,7 @@ const GameControl = (() => {
                     break;
 
                 default:
+                    console.log("Error somewhere!!!");
                     break;
             }
         })
@@ -151,6 +160,5 @@ const GameControl = (() => {
     }
     return {turns, reset}
 })();
-
 GameBoard.createBoard();
 GameControl.turns();

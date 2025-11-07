@@ -7,8 +7,8 @@
     color: #f1f1f1;
 }
 :root{
-    --player-turn-width: 120px;
-    --player-turn-height: 150px;
+    --player-turn-width: 165px;
+    --player-turn-height: 220px;
     --bg-clr: #20B2AA;
     --cell-clr: #026161;
 }
@@ -51,18 +51,18 @@ body{
     background: var(--cell-clr);
     color: #f1f1f1;
     border-radius: 5px;
-    font-size: 100px;
+    font-size: 96px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .player-one-turn, .player-two-turn {
-    border: none;
+    /* border: 1px solid var(--cell-clr); */
     background: var(--bg-clr);
-    box-shadow: 0 0 10px var(--cell-clr);
     height: var(--player-turn-height);
     width: var(--player-turn-width);
+    box-shadow: 0 0 10px var(--cell-clr);
     border-radius: 5px;
     display: flex;
     flex-direction: column;
@@ -73,13 +73,18 @@ body{
 }
 
 .img{
-    border: 1px solid black;
     height: calc( 2/3 * var(--player-turn-height));
     width: calc( 2/3 * var(--player-turn-height));
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+img{
+    height: calc( 2/3 * var(--player-turn-height));
+    width: calc( 2/3 * var(--player-turn-height));
+    border-radius: 50%;
 }
 
 /* Footer div */
