@@ -2,35 +2,65 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    font-family: monospace;
+    /* font-size: 56px; */
+    color: #f1f1f1;
 }
 :root{
     --player-turn-width: 120px;
     --player-turn-height: 150px;
+    --bg-clr: #20B2AA;
+    --cell-clr: #026161;
 }
 body{
     height: 100vh;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
+    background: var(--bg-clr);
+}
+.main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.header{
+    text-shadow: 0px 0px 10px var(--cell-clr);
+    color: #f7f7f7;
+    font-size: 56px;
+}
+.middle-section{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100vw;
 }
 .board-container{
+    background: var(--bg-clr);
+    box-shadow: 0px 0px 10px var(--cell-clr);
     width: 400px;
     height: 400px;
-    padding: 10px;
+    padding: 15px;
     border-radius: 10px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    border: 1px solid black;
     gap: 10px;
 }
 .cell{
-    border: 1px solid black;
+    background: var(--cell-clr);
+    color: #f1f1f1;
     border-radius: 5px;
+    font-size: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .player-one-turn, .player-two-turn {
-    border: 1px solid black;
+    border: none;
+    background: var(--bg-clr);
+    box-shadow: 0 0 10px var(--cell-clr);
     height: var(--player-turn-height);
     width: var(--player-turn-width);
     border-radius: 5px;
@@ -39,7 +69,7 @@ body{
     justify-content: space-around;
     align-items: center;
     font-size: 18px;
-    font-family: monospace;
+    transition: 250ms ease-in all;
 }
 
 .img{
@@ -50,4 +80,19 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+/* Footer div */
+#reset{
+    border: none;
+    box-shadow: 0 0 10px var(--cell-clr);
+    margin-top: 10px;
+    background: var(--bg-clr);
+    border-radius: 5px;
+    width: 300px;
+    height: 40px;
+    font-size: 36px;
+}
+#reset:hover{
+    cursor: pointer;
 }

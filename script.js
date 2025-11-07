@@ -5,6 +5,11 @@ const Player = (name, mark) => {
 
 // GameBoard module
 const GameBoard = (() => {
+    // Capture DoM elements.
+    const mainDiv = document.querySelector('.main');
+    const gameBoard = document.querySelector('.board-container');
+    const boardContainer = document.querySelectorAll('.cell');
+
     // create array to hold positions
     let cell = [];
 
@@ -19,6 +24,7 @@ const GameBoard = (() => {
     const createBoard = () => {
         // create divs and push the to the gridContainer
         for (let i = 0; i < 9; i++) {
+            boardContainer[i].textContent = " "; 
             cell.push(`${i}`);
         }
     }
@@ -26,16 +32,20 @@ const GameBoard = (() => {
     // set mark in specific position
     const setMark = (mark, position) => {
         if (cell[position] === 'X' || cell[position] === 'O') {
-            gameTitle = "Space occupied";
             console.log("Space occupied!");
             return false;
         } else {
-            cell.splice(position, 1, mark)
+            cell.splice(position, 1, mark);
+            boardContainer[position].textContent = mark;
             return true;
         }
     }
+
     // display cells in terminal
     const displayBoard = function(){
+        boardContainer.forEach((element) => {
+            gameBoard.append(element);
+        })
         console.log(`
             ${cell[0]}  | ${cell[1]}  |  ${cell[2]}
             _____________
@@ -47,10 +57,11 @@ const GameBoard = (() => {
     // Clear game board
     const clearBoard = () => cell.length = 0;
 
-    return {cell, player1, player2, createBoard, setMark, displayBoard, clearBoard,}
+    return {mainDiv, gameBoard, boardContainer, cell, player1, player2, createBoard, setMark, displayBoard, clearBoard,}
 })();
 
 const GameControl = (() => {
+    const title = document.querySelector('.header');
     // create and initialize count and gameOver
     let count = 0;
     let gameOver = false;
@@ -74,48 +85,69 @@ const GameControl = (() => {
         console.log("Game Over!!!");
         return;
     }
-    
+
     // check the if there is a winner
     const checkWinner = () => {
         winningArray.forEach((combination) => {
             const [a, b, c] = combination;
             if (GameBoard.cell[a] !== " " && GameBoard.cell[a] === GameBoard.cell[b] && GameBoard.cell[a] === GameBoard.cell[c]) {
                 const winner = GameBoard.cell[a] === GameBoard.player1.mark ? GameBoard.player1 :GameBoard.player2;
+                title.textContent = `${winner.name} (${winner.mark})has won!`;
                 console.log(`${winner.name}(${winner.mark})has won the game!`);
-                gameOver = true 
+                gameOver = true
+                return true; 
             }
         })
+        return false;
     }
 
     // check for turns
     const turns = () => {
+        GameBoard.mainDiv.addEventListener('click', (event) => {            
+            switch(event.target.classList.value) {
+                case "cell":
+                    if (gameOver) return console.log("Game Over!!!");
 
-        if (gameOver) return console.log("Game Over!!!");
+                    const position = event.target.dataset.position;
+                    const currentPlayer = (count % 2 === 0) ? GameBoard.player1: GameBoard.player2;
+        
+                    if (position == null) return;
+        
+                    if (position < 0 || position > 8 || !GameBoard.setMark(currentPlayer.mark, position)) {
+                        console.log("Invalid move, try again.");
+                        return;
+                    }
+                    GameBoard.displayBoard();
+                    if (checkWinner()) {
+                        GameBoard.gameBoard.removeEventListener('click');
+                        gameOver = true;
+                    }
+                    if (count >= 9) {
+                        title.textContent = "Draw!";
+                        gameOver = true;
+                    }
+                    count++;
+                    break;
 
-        const currentPlayer = (count % 2 === 0) ? GameBoard.player1: GameBoard.player2;
-        const position = prompt(`${currentPlayer.name} ${currentPlayer.mark} enter position (0-8)`);
+                case "reset":
+                    console.log("Game reset");
+                    reset();
+                    break;
 
-        if (position < 0 || position > 8 || !GameBoard.setMark(currentPlayer.mark, position)) {
-            console.log("Invalid move, try again.");
-            return turns();
-        }
+                default:
+                    break;
+            }
+        })
 
-        GameBoard.displayBoard();
-        checkWinner();
-
-        if (count >= 9) gameOver = true;
-        count++;
-        turns()
     }
     const reset = () => {
         GameBoard.clearBoard();
         GameBoard.createBoard();
         gameOver = false;
         count = 0;
-        turns();
     }
-    return {turns, reset,}
+    return {turns, reset}
 })();
 
 GameBoard.createBoard();
-// GameControl.turns();
+GameControl.turns();
