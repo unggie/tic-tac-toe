@@ -8,6 +8,7 @@ The game allows two players to compete on a 3×3 grid, detects wins and draws, a
 ## 🧩 Table of Contents
 - [Overview](#overview)
 - [Features](#features)
+- [Visual](#liveDemo)
 - [Project Structure](#project-structure)
 - [How It Works](#how-it-works)
   - [Player Factory](#1-player-factory)
@@ -41,6 +42,11 @@ The gameplay is straightforward:
 ✅ Console logging for debugging and internal game state  
 ✅ DOM-based UI updates  
 ✅ Reset functionality to restart the match  
+
+---
+
+## Visual
+[Live Demo]( https://unggie.github.io/tic-tac-toe/)
 
 ---
 
